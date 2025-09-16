@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const port = 8080;
 
-const { createSqlTable } = require("./sqlBuilder");
+const { createSqlTable, createSqlInsert } = require("./sqlBuilder");
 
 app.use(express.json());
 
@@ -19,8 +19,9 @@ app.get("/sql", (req, res) => {
 
   const tableName = req.query.tableName || "no_name_provided";
 
-  const createTableSQL = createSqlTable(tableName, json[0]);
-  res.type("text/plain").send(createTableSQL);
+  const tableSQL = createSqlTable(tableName, json[0]);
+  const insertSQL = createSqlInsert(tableName, json);
+  res.type("text/plain").send(`${tableSQL}\n\n${insertSQL}`);
 });
 
 app.listen(port, () => {

@@ -20,4 +20,17 @@ function createSqlTable(tableName, json) {
   return `CREATE TABLE ${tableName} (\n  ${columns}\n);`;
 }
 
-module.exports = { createSqlTable };
+function createSqlInsert(tableName, json) {
+  const columns = Object.keys(json[0]).join(", ");
+  const values = Object.values(json)
+    .map((row) => {
+      const vals = Object.values(row)
+        .map((value) => (typeof value === "string" ? `'${value}'` : value))
+        .join(", ");
+      return `(${vals})`;
+    })
+    .join(",\n  ");
+  return `INSERT INTO ${tableName} (${columns}) \nVALUES (\n  ${values}\n);`;
+}
+
+module.exports = { createSqlTable, createSqlInsert };
