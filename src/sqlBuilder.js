@@ -29,7 +29,7 @@ function createSqlTable(tableName, json) {
 // json is an array of objects
 function createSqlInsert(tableName, json) {
   const columns = Object.keys(json[0]).join(", ");
-  const values = Object.values(json)
+  const values = json
     .map((item) => {
       const vals = Object.values(item)
         .map((value) => (typeof value === "string" ? `'${value}'` : value))
